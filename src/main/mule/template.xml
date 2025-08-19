@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+      xmlns:zt="http://www.mulesoft.org/schema/mule/zt"
+      xmlns="http://www.mulesoft.org/schema/mule/core"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns:http-policy="http://www.mulesoft.org/schema/mule/http-policy"
+      xmlns:http-transform="http://www.mulesoft.org/schema/mule/http-policy-transform" 
+      xmlns:secure-properties="http://www.mulesoft.org/schema/mule/secure-properties" 
+      xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core 
+  http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd 
+  http://www.mulesoft.org/schema/mule/http 
+  http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd 
+  http://www.mulesoft.org/schema/mule/core 
+  http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+  http://www.mulesoft.org/schema/mule/http-policy 
+  http://www.mulesoft.org/schema/mule/http-policy/current/mule-http-policy.xsd
+  http://www.mulesoft.org/schema/mule/secure-properties 
+  http://www.mulesoft.org/schema/mule/secure-properties/current/mule-secure-properties.xsd
+  http://www.mulesoft.org/schema/mule/http-policy-transform 
+  http://www.mulesoft.org/schema/mule/http-policy-transform/current/mule-http-policy-transform.xsd
+  http://www.mulesoft.org/schema/mule/zt 
+  http://www.mulesoft.org/schema/mule/zt/current/mule-zt.xsd">
+
+
+    {{#if encrypted}}
+    <secure-properties:config key="${anypoint.platform.encryption_key}" file="${encryptedPropertiesFile}" name="encryptionConfiguration">
+        <secure-properties:encrypt algorithm="AES" mode="CBC"/>
+    </secure-properties:config>
+    {{/if}}
+    
+    <!--   If dataBlindApiUri and dataBlindApiKey are blank, the policy gives error when creating DBLConnector. Hence assigning defaults -->
+    
+	<zt:config name="DATA_BLIND_Config" doc:name="DATA BLIND Config" doc:id="db83d3cc-6e52-40bb-bbb4-d804660144b0" encryptionKey="{{{dataBlindKey}}}" apiKey="#[vars.dataBlindApiKey default 'NOKEY']" apiUri="#[vars.dataBlindApiUri default 'NOURI']" />
+
+    <http-policy:proxy name="{{{policyId}}}-custom-policy">
+        <http-policy:source>
+          <try>
+          
+          	<set-variable variableName="logLabel" value="DATABLIND_POLICY 2.0.0: " />
+       		<set-variable variableName="sensitiveFields" value="{{{sensitiveFields}}}" />
+    <set-variable variableName="dataBlindApiUri" value="{{{dataBlindApiUri}}}" />
+    <set-variable variableName="dataBlindApiKey" value="{{{dataBlindApiKey}}}" />
+       		<set-variable variableName="sensitiveFieldsSpecified" value="{{{sensitiveFieldsSpecified}}}" />
+       		<set-variable variableName="dataBlindKey" value="{{{dataBlindKey}}}" />
+       		<set-variable variableName="eligibleHttpCodes" value="{{{eligibleHttpCodes}}}" />
+       		<set-variable variableName="dataBlindPassphrase" value="{{{dataBlindPassphrase}}}" />
+       		<set-variable variableName="dataBlindToken" value="{{{dataBlindToken}}}" />
+       		
+       		
+
+			<set-variable variableName="dataBlindOAuthScope" value="#[(authentication.properties.claims.scp filter ($ == 'DataBlind-Disabled'))[0] default 'DataBlind-Enabled' ]" /> 
+			
+						
+            <http-policy:execute-next/>  
+            <logger level="INFO" message="#[ vars.logLabel ++ 'DataBlind Policy Begins after execute-next']" />
+            
+            <logger level="INFO" message="#[vars.logLabel ++ 'dataBlindOAuthScope ' ++ vars.dataBlindOAuthScope]" />
+            
+       		<set-variable variableName="payload" value="#[message.payload]" />   
+<!--
+         	<set-variable variableName="tweak" value="#[message.payload.Id]" /> 
+       		<logger level="INFO" message="#[vars.logLabel ++ 'message.payload.id ' ++ vars.tweak]" />
+-->
+       		
+<!--  
+       		<logger level="INFO" message="#[vars.payload]" />
+       		<logger level="INFO" message="#[message.payload]" />
+-->
+       		<logger level="INFO" message="#[vars.logLabel ++ vars.sensitiveFieldsSpecified]" />
+       		<logger level="INFO" message="#[vars.sensitiveFields]" />
+<!--
+       		<logger level="INFO" message="#[vars.logLabel ++ vars.dataBlindPassphrase]" />
+       		<logger level="INFO" message="#[vars.logLabel ++ vars.dataBlindToken]" />
+       		<logger level="INFO" message="#[vars.logLabel ++ vars.dataBlindKey]" />
+-->
+       		<logger level="INFO" message="#[vars.logLabel ++ message.attributes.statusCode]" />
+       		
+<!--  	  		<zt:override-token-with-new-key doc:name="Override token with new key" doc:id="d53686ec-6dbe-4341-904c-638718bd41b6" arg2="12345" arg0="1234567812345678" arg1="passPhrase" target="dblindTokenOut"/>	   
+			<logger level="INFO" message="#[vars.logLabel ++ vars.dblindTokenOut]" />
+-->
+            <logger level="INFO" message="#[ vars.logLabel ++ 'DataBlind Policy - Checking statuscode']" />
+
+            <choice>
+                <when expression="#[(vars.eligibleHttpCodes contains message.attributes.statusCode)]" >   
+                
+                   <set-variable variableName="tweak" value="{{{tweak}}}" />
+       		       <set-variable variableName="filterIds" value="{{{idField}}}" />
+       		       <logger level="INFO" message="#[vars.logLabel ++ vars.tweak]" />
+
+                   <choice>
+                      <when expression="#[((vars.sensitiveFieldsSpecified as Boolean) == true)]" >   
+                      		<zt:encrypt-json doc:name="Encrypt json" doc:id="2ee9cd3c-ecc5-4bef-b3a9-cbcc76d9428d" config-ref="DATA_BLIND_Config" sensitiveFields="#[write(vars.sensitiveFields, 'application/json')]" sensitiveJson="#[write(message.payload, 'application/json')]" tweak="#[vars.tweak]" passPhrase="#[vars.dataBlindPassphrase]" overRideToken="#[vars.dataBlindToken]" target="dblindOut" />
+                      </when>
+                      <otherwise >
+       				        <logger level="INFO" message="[vars.logLabel ++ 'Sensitive Data not specified, using AI to determine sensitive fields']" />
+                      		<ee:transform doc:name="Transform Message" doc:id="7d1b9ec6-6654-44d5-bc51-9aaedd86272f" >
+			                          <ee:message >
+			                          </ee:message>
+			                          <ee:variables >
+				                      <ee:set-variable variableName="datablindApiData" ><![CDATA[%dw 2.0
+                                          output application/json
+                                          ---
+                                          {
+                                            "key": vars.dataBlindKey,
+                                            "tweak": vars.tweak,
+                                            "data": write(message.payload, 'application/json') ,
+                                            "overRideToken": vars.dataBlindToken,
+                                            "overRidePassPhrase": vars.dataBlindPassphrase
+                                          }]]></ee:set-variable>
+			                          </ee:variables>
+		                    </ee:transform>
+       				       <http:request method="POST" doc:name="Request" doc:id="cb42d2a6-8d1e-4049-aab2-fbe9dfe57676" url="#[vars.dataBlindApiUri]" target="dblindSvcOut">
+			                   <http:body ><![CDATA[#[vars.datablindApiData]]]></http:body>
+			                   <http:headers ><![CDATA[#[output application/java---
+                                       {
+	                                    "Content-Type" : "application/json",
+                                        "x-api-key" : vars.dataBlindApiKey
+                                       }]]]></http:headers>
+		                   </http:request>
+		                   <set-variable value="#[vars.dblindSvcOut.token]" doc:name="dblindOut" doc:id="058a946f-15b9-4bfe-b7c0-de137d4f6c47" variableName="dblindOut"/>
+				      </otherwise>
+                   </choice>
+
+					<logger level="INFO" message="#[ vars.logLabel ++ 'After Encrypt Json']" />
+					
+					<logger level="INFO" message="#[vars.dblindOut]" />
+					
+       				<logger level="INFO" message="#[vars.logLabel ++ 'Datablind Encryption Completed']" />
+       			       			
+		           <set-variable value='#[%dw 2.0&#10;output application/json&#10;---&#10;read(vars.dblindOut,"application/json")]' doc:name="Set Variable" doc:id="98fb6712-8f4b-41d2-8ba5-7df3cab536cc" variableName="jsonpayload"/>
+       				<logger level="INFO" message="#[ vars.logLabel ++ 'After Json conversion']" />
+<!--       				
+					<logger level="INFO" message="#[vars.jsonpayload]" />
+-->					       				
+					<http-transform:set-response statusCode="#[message.attributes.statusCode]">
+			  	    	<http-transform:body>#[vars.jsonpayload]</http-transform:body>
+			  	    	
+					</http-transform:set-response>
+                </when>
+                <otherwise >
+       				<logger level="INFO" message="[vars.logLabel ++ 'Datablind Encryption Ignored']" />
+				</otherwise>
+            </choice>
+	 		<error-handler>
+	              <on-error-continue>
+	              	<logger level="INFO" message="#[vars.logLabel ++ 'DataBlind Policy Error Message : ' ++ write(error,'application/json')]"/>
+	              
+<!--    	             <set-payload value="Error in DataBlind Policy. Please check the DataBlind Policy configuration" /> -->
+
+
+        	      </on-error-continue>
+	        </error-handler>
+		 </try>
+        </http-policy:source>
+    </http-policy:proxy>
+</mule>

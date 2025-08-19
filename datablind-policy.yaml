@@ -1,0 +1,89 @@
+id: DataBlind
+name: DataBlind
+description: Allows Sensitive PII data based based on customer's token status
+category: Custom
+type: custom
+resourceLevelSupported: true
+encryptionSupported: true
+standalone: true
+supportedJavaVersions: ["17"]
+requiredCharacteristics: []
+providedCharacteristics: []
+configuration: 
+   - propertyName: dataBlindKey
+     name: Datablind Key
+     description: Encryption Key used by the DataBlind
+     type: expression
+     defaultValue: "#['1234567812345678']"
+     optional: false
+     sensitive: true
+     allowMultiple: false
+   - propertyName: tweak
+     name: Tweak
+     description: Payload Field to be used as Encryption Tweak
+     type: expression
+     defaultValue: "#[message.payload.Id default '12345678']"
+     optional: false
+     sensitive: false
+     allowMultiple: false
+   - propertyName: sensitiveFieldsSpecified
+     name: Manually Specify Sensitive Fields 
+     description: If selected, then the sensitiveFields will be specified manually.
+     type: boolean
+     optional: false
+     defaultValue: false
+     allowMultiple: false
+   - propertyName: dataBlindApiUri
+     name: DataBlind AI Redaction Service URI
+     description: URI for AI based redaction service
+     type: expression
+     defaultValue: "#['https://kwoz0lfnn8.execute-api.us-west-1.amazonaws.com/Dev/datacrypt-nlp']"
+     optional: true
+     sensitive: false
+     dependsOnKey: sensitiveFieldsSpecified
+     dependsOnValue: false
+     allowMultiple: false     
+   - propertyName: dataBlindApiKey
+     name: API Key for DataBlind AI Redaction API
+     description: API Key for DataBlind AI Redaction API
+     type: expression
+     defaultValue: "#['Please contact mulesoftconnector@ztensor.com']"
+     optional: true
+     sensitive: true
+     dependsOnKey: sensitiveFieldsSpecified
+     dependsOnValue: false
+     allowMultiple: false     
+   - propertyName: sensitiveFields
+     name: Sentitive Fields
+     description: Sensitive fields in the API response
+     type: expression
+     defaultValue: '#[{ "Name" : "FE:PersonName", "TaxId" : "FE:SSN" }]'
+     optional: true
+     sensitive: false
+     dependsOnKey: sensitiveFieldsSpecified
+     dependsOnValue: true
+     allowMultiple: false
+   - propertyName: eligibleHttpCodes
+     name: Eligible HTTP Codes
+     description: Apply Datablind only when the API response has the following HTTP Codes 
+     type: expression
+     defaultValue: "#['200,201,202,205,213']"
+     optional: false
+     sensitive: false
+     allowMultiple: false
+   - propertyName: dataBlindToken
+     name: Override Token for DataBlind
+     description: When a valid override token is provided, Datablind returns the unencrypted and unmasked data
+     type: expression
+     defaultValue: "#[attributes.headers['dataBlindToken']]"
+     optional: false
+     sensitive: false
+     allowMultiple: false
+   - propertyName: dataBlindPassphrase
+     name: Passphrase used when creating the Override Token for DataBlind
+     description: When a valid override token passphrase is provided, Datablind returns the unencrypted and unmasked data
+     type: expression
+     defaultValue: "#[attributes.headers['dataBlindPassphrase']]"
+     optional: false
+     sensitive: false
+     allowMultiple: false
