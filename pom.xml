@@ -4,9 +4,9 @@
 
 	<groupId>a79366f6-f351-4a5e-9386-00c7ef207362</groupId>
 	<artifactId>datablind-policy</artifactId>
-	<version>4.0.14</version>
+	<version>4.0.15</version>
 
-	<name>anypoint-datablind-policy</name>
+	<name>dblpolicy_j17</name>
 	<description>Allows Sensitive PII data based on customer's token status</description>
 
 	<packaging>mule-policy</packaging>
@@ -26,19 +26,19 @@
 			<version>${http.policy.transform.extension}</version>
 			<classifier>mule-plugin</classifier>
 			<!-- HTTP Connector is excluded to avoid packaging it with the policy, since the application's HTTP connector is used -->
-  			<exclusions>
+			<exclusions>
 				<exclusion>
 					<groupId>org.mule.connectors</groupId>
 					<artifactId>mule-http-connector</artifactId>
 				</exclusion>
-			</exclusions>		
+			</exclusions>
 		</dependency>
 		<dependency>
-  			<groupId>org.mule.connectors</groupId>
-  			<artifactId>mule-http-connector</artifactId>
-  			<version>1.9.0</version>   
-  			<classifier>mule-plugin</classifier>
-		</dependency>	
+			<groupId>org.mule.connectors</groupId>
+			<artifactId>mule-http-connector</artifactId>
+			<version>1.9.0</version>
+			<classifier>mule-plugin</classifier>
+		</dependency>
 		<dependency>
 			<groupId>com.mulesoft.modules</groupId>
 			<artifactId>mule-secure-configuration-property-module</artifactId>
@@ -48,18 +48,18 @@
 		<dependency>
 			<groupId>${project.groupId}</groupId>
 			<artifactId>DataBlind</artifactId>
-			<version>4.0.5</version>
+			<version>4.0.6</version>
 			<classifier>mule-plugin</classifier>
 		</dependency>
 	</dependencies>
 	<build>
 		<plugins>
-<!--  			
+			<!--  			
 			<plugin>
   				<artifactId>maven-compiler-plugin</artifactId>
   				<version>3.11.0</version>
   				<configuration>
-    			<release>17</release>
+				<release>17</release>
   				</configuration>
 			</plugin>
 -->
