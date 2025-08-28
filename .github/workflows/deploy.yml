@@ -43,6 +43,8 @@ jobs:
         ANYPOINT_PASSWORD: ${{ secrets.ANYPOINT_PASSWORD }}
         DBLREPO_USERNAME: ${{ secrets.DBLREPO_USERNAME }}
         DBLREPO_PASSWORD: ${{ secrets.DBLREPO_PASSWORD }}
+        MULEREPO_USERNAME: ${{ secrets.MULE_ENTREPO_USERNAME}}
+        MULEREPO_PASSWORD: ${{ secrets.MULE_ENTREPO_PASSWORD}}
       run: |
         echo "${SHELL}"
         echo "Checking secrets availability:"
@@ -55,7 +57,9 @@ jobs:
           -Danypoint_username=$ANYPOINT_USERNAME \
           -Danypoint_password=$ANYPOINT_PASSWORD \
           -Ddblrepo_username=$DBLREPO_USERNAME \
-          -Ddblrepo_password=$DBLREPO_PASSWORD 
+          -Ddblrepo_password=$DBLREPO_PASSWORD \
+          -Dmulerepo_username=${MULEREPO_USERNAME} \
+          -Dmulerepo_password=${MULEREPO_PASSWORD} \
         
     - name: Deploy to Main Environment
       if: github.ref == 'refs/heads/main' || (github.event_name == 'workflow_dispatch' && github.event.inputs.environment == 'main')
@@ -64,17 +68,23 @@ jobs:
         ANYPOINT_PASSWORD: ${{ secrets.ANYPOINT_PASSWORD }}
         DBLREPO_USERNAME: ${{ secrets.DBLREPO_USERNAME }}
         DBLREPO_PASSWORD: ${{ secrets.DBLREPO_PASSWORD }}
+        MULEREPO_USERNAME: ${{ secrets.MULE_ENTREPO_USERNAME}}
+        MULEREPO_PASSWORD: ${{ secrets.MULE_ENTREPO_PASSWORD}}
+        
       run: |
         echo "Checking secrets availability:"
         echo "ANYPOINT_USERNAME length: ${#ANYPOINT_USERNAME}"
         echo "DBLREPO_USERNAME length: ${#DBLREPO_USERNAME}"
+        echo "MULEREPO_USERNAME length: ${#MULEREPO_USERNAME}"
         echo "ANYPOINT_USERNAME: '${ANYPOINT_USERNAME }'"
         echo "DBLREPO_USERNAME: '${DBLREPO_USERNAME }'"
+        echo "MULEREPO_USERNAME: '${MULEREPO_USERNAME }'"
         echo "Starting Maven deployment..."
         mvn clean package deploy -s ./settings.xml \
           -Danypoint_username=${ANYPOINT_USERNAME } \
           -Danypoint_password=${ANYPOINT_PASSWORD } \
           -Ddblrepo_username=${DBLREPO_USERNAME } \
           -Ddblrepo_password=${DBLREPO_PASSWORD } \
-    
+          -Dmulerepo_username=${MULEREPO_USERNAME} \
+          -Dmulerepo_password=${MULEREPO_PASSWORD}
 

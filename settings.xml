@@ -12,11 +12,11 @@
        <pluginGroup>org.mule.tools</pluginGroup>
    </pluginGroups>
    <servers>
-<!--        <server>
+        <server>
            <id>MuleRepository</id>
            <username>${muleentrepo_username}</username>
            <password>${muleentrepo_password}</password>
-       </server> -->
+       </server> 
        <server>
            <id>anypoint-exchange-v3</id>
            <username>${anypoint_username}</username>
@@ -35,7 +35,7 @@
    </servers>
    <mirrors/>
    <profiles>
-<!--       <profile>
+       <profile>
            <id>Mule</id>
            <activation>
                <activeByDefault>true</activeByDefault>
@@ -54,7 +54,7 @@
                    </snapshots>
                </repository>
            </repositories>
-       </profile>-->
+       </profile>
        <profile>
            <id>mule-extra-repos</id>
            <activation>
