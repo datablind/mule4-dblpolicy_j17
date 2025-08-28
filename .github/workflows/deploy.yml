@@ -58,8 +58,8 @@ jobs:
           -Danypoint_password=$ANYPOINT_PASSWORD \
           -Ddblrepo_username=$DBLREPO_USERNAME \
           -Ddblrepo_password=$DBLREPO_PASSWORD \
-          -Dmulerepo_username=${MULEREPO_USERNAME} \
-          -Dmulerepo_password=${MULEREPO_PASSWORD} \
+          -Dmuleentrepo_username=${MULEREPO_USERNAME} \
+          -Dmuleentrepo_password=${MULEREPO_PASSWORD} \
         
     - name: Deploy to Main Environment
       if: github.ref == 'refs/heads/main' || (github.event_name == 'workflow_dispatch' && github.event.inputs.environment == 'main')
@@ -85,6 +85,6 @@ jobs:
           -Danypoint_password=${ANYPOINT_PASSWORD } \
           -Ddblrepo_username=${DBLREPO_USERNAME } \
           -Ddblrepo_password=${DBLREPO_PASSWORD } \
-          -Dmulerepo_username=${MULEREPO_USERNAME} \
-          -Dmulerepo_password=${MULEREPO_PASSWORD}
+          -Dmuleentrepo_username=${MULEREPO_USERNAME} \
+          -Dmuleentrepo_password=${MULEREPO_PASSWORD}
 
