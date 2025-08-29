@@ -4,7 +4,7 @@
 
 	<groupId>a79366f6-f351-4a5e-9386-00c7ef207362</groupId>
 	<artifactId>datablind-policy</artifactId>
-	<version>4.0.15</version>
+	<version>4.0.16</version>
 
 	<name>dblpolicy_j17</name>
 	<description>Allows Sensitive PII data based on customer's token status</description>
