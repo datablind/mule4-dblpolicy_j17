@@ -53,7 +53,7 @@ jobs:
         echo "ANYPOINT_PASSWORD length: ${#ANYPOINT_PASSWORD}"
         echo "DBLREPO_PASSWORD length: ${#DBLREPO_PASSWORD}"
         echo "Starting Maven deployment...."
-        mvn clean package deploy -s ./settings.xml \
+        mvn clean deploy -s ./settings.xml \
           -Danypoint_username=$ANYPOINT_USERNAME \
           -Danypoint_password=$ANYPOINT_PASSWORD \
           -Ddblrepo_username=$DBLREPO_USERNAME \
@@ -80,7 +80,7 @@ jobs:
         echo "DBLREPO_USERNAME: '${DBLREPO_USERNAME }'"
         echo "MULEREPO_USERNAME: '${MULEREPO_USERNAME }'"
         echo "Starting Maven deployment..."
-        mvn clean package deploy -s ./settings.xml \
+        mvn clean deploy -s ./settings.xml \
           -Danypoint_username=${ANYPOINT_USERNAME } \
           -Danypoint_password=${ANYPOINT_PASSWORD } \
           -Ddblrepo_username=${DBLREPO_USERNAME } \
