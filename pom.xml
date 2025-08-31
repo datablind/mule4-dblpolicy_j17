@@ -48,7 +48,7 @@
 		<dependency>
 			<groupId>${project.groupId}</groupId>
 			<artifactId>DataBlind</artifactId>
-			<version>4.0.6</version>
+			<version>4.0.24</version>
 			<classifier>mule-plugin</classifier>
 		</dependency>
 	</dependencies>
