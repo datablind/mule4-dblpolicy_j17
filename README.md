@@ -1,6 +1,6 @@
 # Anypoint Datablind Policy
 
-ANypoint Data Blind policy protects sensitive data in API response by encrypting the sensitive fields. Sensitive fields are protected by encryption (AES/FPE) and masking. Users requiring sensitive date is required to provide a valid Override-Token provided by DataBlind. Users providing an expired or empty Override-Token will only get the encrypted data.
+Anypoint Data Blind policy protects sensitive data in API response by encrypting the sensitive fields. Sensitive fields are protected by encryption (AES/FPE) and masking. Users requiring sensitive date is required to provide a valid Override-Token provided by DataBlind. Users providing an expired or empty Override-Token will only get the encrypted data.
 
 
 ## API Responses
