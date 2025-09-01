@@ -9,27 +9,12 @@ Anypoint Data Blind policy protects sensitive data in API response by encrypting
 
 # How to apply DataBlind to your API
 
-## Publish Datablind Assets to your exchange 
+## Apply Datablind Policy to your API 
 
-1. Publish Datablind Connector to your exchange.
-   Follow the instructions at https://github.com/mjegann5/anypoint-data-blind-connector
+1. API Manager -> Select your API Instance -> Policies
    
-2. Publish Datablind Policy to your exchange
-* A. Clone this repo
-```
-       git clone https://github.com/mjegann5/anypoint-datablind-policy.git
-```
-* B. In pom.xml replace ANYPOINT_ORG_ID by your Anypoint Org Id
-```
-       <groupId>ANYPOINT_ORG_ID</groupId> => <groupId>5tdfgceb5-fd1f-456d-aaa2-19cdsddcea</groupId>
-```
-* C. Run the maven command to deploy datablind policy to your exchange.
-  anypoint_username and anypoint_password are your anypoint platform credentials.
-  muleentrepo_username and muleentrepo_password are the anypoint enterprise repo credentials. Your anypoint platform admin will be able to provide this.
-  Contact mjegann@kavisoft.net to get a valid cwrepo_password.)
-```
-	mvn deploy -DskipTests -s .\settings.xml -Dmuleentrepo_username="******" -Dmuleentrepo_password="******" -Danypoint_username="******" -Danypoint_password="******" -Dcwrepo_username="Token" -Dcwrepo_password="******************"
-```
+2. Select DataBlind policy loacted under Custom Category
+
 ## Configure Policy in API Manager
 
 1. Policy parameters
@@ -40,7 +25,7 @@ Anypoint Data Blind policy protects sensitive data in API response by encrypting
 | Manually Specify Sensitive Fields | Select if you want to manually specify the sensitive fields in the API response | Required  | Click to Select |
 | Sentitive Fields | Sensitive fields in the API response | Required  | #[{    "Title" : "FE:PersonName"  }] |
 | DataBlind AI Redaction Service URI | URI for DataBlind redaction service securely hosted in AWS. Used when sensitive fields are not specified manually. This service uses AI to determine the sensitive fields and encrypts the values | Required  | #['https://kwoz0lfnn8.execute-api.us-west-1.amazonaws.com/Dev'] |
-| API Key for DataBlind AI Redaction Service | API Key for DataBlind redaction service securely hosted in AWS. Used when sensitive fields are not specified manually. This service uses AI to determine the sensitive fields and encrypts the values | Required  | #['w4i8ru24oifhfdskfjoweaihf'] |
+| API Key for DataBlind AI Redaction Service | API Key for DataBlind redaction service securely hosted in AWS. Used when sensitive fields are not specified manually. This service uses AI to determine the sensitive fields and encrypts the values. Contact datablindsupport@ztensor to get a new API Key. | Required  | #['w4i8ru24oifhfdskfjoweaihf'] |
 | Eligible HTTP Codes | Apply Datablind only when the API response has the following HTTP Codes | Required  | #["200,201,202,205,213"] |
 | Override Token for DataBlind | When a valid override token is provided, Datablind returns the unencrypted and unmasked data | Optional  | #[attributes.headers['dataBlindToken']] |
 | Passphrase used when creating the Override Token for DataBlind | When a valid override token passphrase is provided, Datablind returns the unencrypted and unmasked data  | Optional  | #[attributes.headers['dataBlindPassphrase']] |
