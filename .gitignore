@@ -1,1 +1,6 @@
 /target/
+/cgit.sh
+/.project
+/.classpath
+/.idea
+/.vscode

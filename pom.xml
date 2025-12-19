@@ -4,7 +4,7 @@
 
 	<groupId>a79366f6-f351-4a5e-9386-00c7ef207362</groupId>
 	<artifactId>datablind-policy</artifactId>
-	<version>4.0.18</version>
+	<version>5.0.0</version>
 
 	<name>dblpolicy_j17</name>
 	<description>Allows Sensitive PII data based on customer's token status</description>
@@ -48,7 +48,7 @@
 		<dependency>
 			<groupId>${project.groupId}</groupId>
 			<artifactId>DataBlind</artifactId>
-			<version>4.0.24</version>
+			<version>5.0.0</version>
 			<classifier>mule-plugin</classifier>
 		</dependency>
 	</dependencies>
@@ -68,7 +68,7 @@
 								<dependency>
 									<groupId>com.ztensor</groupId>
 									<artifactId>datacrypt</artifactId>
-									<version>3.0.3</version>
+									<version>3.0.5</version>
 								</dependency>
 							</additionalDependencies>
 						</plugin>
