@@ -21,7 +21,9 @@
 		<securePropertyModuleVersion>1.2.7</securePropertyModuleVersion>
 		<!-- Group ID where the Datablind connector is hosted -->
 		<datablind.exchange.groupId>${project.groupId}</datablind.exchange.groupId>
-		<anypoint.groupId>13c7cbe2-61a5-4740-9da0-ae298639b607</anypoint.groupId>
+		<!-- Datablind connector version -->
+		<datablind.version>5.0.3</datablind.version>
+<!--		<anypoint.groupId>13c7cbe2-61a5-4740-9da0-ae298639b607</anypoint.groupId> -->
 	</properties>
 	<dependencies>
 		<dependency>
@@ -52,7 +54,7 @@
 		<dependency>
 			<groupId>${project.groupId}</groupId>
 			<artifactId>DataBlind</artifactId>
-			<version>5.0.0</version>
+			<version>${datablind.version}</version>
 			<classifier>mule-plugin</classifier>
 		</dependency>
 	</dependencies>
