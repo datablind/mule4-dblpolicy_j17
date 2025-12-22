@@ -19,11 +19,12 @@
 		<exchange.url>https://maven.anypoint.mulesoft.com/api/v1/organizations/${project.groupId}/maven</exchange.url>
 		<http.policy.transform.extension>3.2.0</http.policy.transform.extension>
 		<securePropertyModuleVersion>1.2.7</securePropertyModuleVersion>
-		<!-- Group ID where the Datablind connector is hosted -->
-		<datablind.exchange.groupId>${project.groupId}</datablind.exchange.groupId>
+		<!-- Datablind Connector is expected to be in the same exchange the Datablind policy is deployed -->
+<!-- 		<datablind.exchange.groupId>${project.groupId}</datablind.exchange.groupId> -->
 		<!-- Datablind connector version -->
 		<datablind.version>5.0.3</datablind.version>
-<!--		<anypoint.groupId>13c7cbe2-61a5-4740-9da0-ae298639b607</anypoint.groupId> -->
+		<!-- Anypoint Group ID where the DataBlind connector is hosted -->
+		<anypoint.groupId>13c7cbe2-61a5-4740-9da0-ae298639b607</anypoint.groupId>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -68,7 +69,7 @@
 				<configuration>
 					<additionalPluginDependencies>
 						<plugin>
-							<groupId>${datablind.exchange.groupId}</groupId>
+							<groupId>${project.groupId}</groupId>
 							<artifactId>DataBlind</artifactId>
 							<additionalDependencies>
 								<dependency>
