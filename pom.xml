@@ -123,6 +123,12 @@
 			<url>https://maven.anypoint.mulesoft.com/api/v3/maven</url>
 			<layout>default</layout>
 		</repository>
+		<repository>
+			<id>anypoint-exchange-v2</id>
+			<name>Anypoint Exchange V2</name>
+			<url>https://maven.anypoint.mulesoft.com/api/v2/maven</url>
+			<layout>default</layout>
+		</repository>
 	</repositories>
 
 	<distributionManagement>
