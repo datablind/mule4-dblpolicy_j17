@@ -35,7 +35,7 @@
    </servers>
    <mirrors/>
    <profiles>
-       <profile>
+<!--       <profile>
            <id>Mule</id>
            <activation>
                <activeByDefault>true</activeByDefault>
@@ -55,6 +55,7 @@
                </repository>
            </repositories>
        </profile>
+-->
        <profile>
            <id>mule-extra-repos</id>
            <activation>
