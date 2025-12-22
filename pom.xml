@@ -6,7 +6,7 @@
 	<groupId>${anypoint.groupId}</groupId>
 	
 	<artifactId>datablind-policy</artifactId>
-	<version>5.0.0</version>
+	<version>5.0.1</version>
 
 	<name>dblpolicy_j17</name>
 	<description>Allows Sensitive PII data based on customer's token status</description>
@@ -123,12 +123,12 @@
 			<url>https://maven.anypoint.mulesoft.com/api/v3/maven</url>
 			<layout>default</layout>
 		</repository>
-		<repository>
+<!-- 		<repository>
 			<id>anypoint-exchange-v2</id>
 			<name>Anypoint Exchange V2</name>
 			<url>https://maven.anypoint.mulesoft.com/api/v2/maven</url>
 			<layout>default</layout>
-		</repository>
+		</repository> -->
 	</repositories>
 
 	<distributionManagement>
