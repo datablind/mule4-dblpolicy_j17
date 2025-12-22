@@ -19,7 +19,7 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    environment: dev
+    environment: ${{ github.ref_name == 'main' && 'main' || 'dev' }}
     
     steps:
     - name: Checkout code
@@ -45,6 +45,7 @@ jobs:
         DBLREPO_PASSWORD: ${{ secrets.DBLREPO_PASSWORD }}
         MULEREPO_USERNAME: ${{ secrets.MULE_ENTREPO_USERNAME}}
         MULEREPO_PASSWORD: ${{ secrets.MULE_ENTREPO_PASSWORD}}
+        ANYPOINT_GROUP_ID: ${{ secrets.ANYPOINT_GROUP_ID }}
       run: |
         echo "${SHELL}"
         echo "Checking secrets availability:"
@@ -52,6 +53,9 @@ jobs:
         echo "DBLREPO_USERNAME length: ${#DBLREPO_USERNAME}"
         echo "ANYPOINT_PASSWORD length: ${#ANYPOINT_PASSWORD}"
         echo "DBLREPO_PASSWORD length: ${#DBLREPO_PASSWORD}"
+        echo "ANYPOINT_GROUP_ID length: ${#ANYPOINT_GROUP_ID}"
+        echo "MULEREPO_USERNAME length: ${#MULEREPO_USERNAME}"
+        echo "MULEREPO_PASSWORD length: ${#MULEREPO_PASSWORD}"
         echo "Starting Maven deployment...."
         mvn clean deploy -s ./settings.xml -DskipTests -Dmaven.javadoc.skip=true -Dmaven.install.skip=true \
           -Danypoint_username=$ANYPOINT_USERNAME \
@@ -60,7 +64,7 @@ jobs:
           -Ddblrepo_password=$DBLREPO_PASSWORD \
           -Dmuleentrepo_username=${MULEREPO_USERNAME} \
           -Dmuleentrepo_password=${MULEREPO_PASSWORD} \
-        
+          -Danypoint_groupId=${ANYPOINT_GROUP_ID} 
     - name: Deploy to Main Environment
       if: github.ref == 'refs/heads/main' || (github.event_name == 'workflow_dispatch' && github.event.inputs.environment == 'main')
       env:
@@ -70,21 +74,24 @@ jobs:
         DBLREPO_PASSWORD: ${{ secrets.DBLREPO_PASSWORD }}
         MULEREPO_USERNAME: ${{ secrets.MULE_ENTREPO_USERNAME}}
         MULEREPO_PASSWORD: ${{ secrets.MULE_ENTREPO_PASSWORD}}
-        
+        ANYPOINT_GROUP_ID: ${{ secrets.ANYPOINT_GROUP_ID }}
       run: |
         echo "Checking secrets availability:"
         echo "ANYPOINT_USERNAME length: ${#ANYPOINT_USERNAME}"
         echo "DBLREPO_USERNAME length: ${#DBLREPO_USERNAME}"
         echo "MULEREPO_USERNAME length: ${#MULEREPO_USERNAME}"
-        echo "ANYPOINT_USERNAME: '${ANYPOINT_USERNAME }'"
-        echo "DBLREPO_USERNAME: '${DBLREPO_USERNAME }'"
-        echo "MULEREPO_USERNAME: '${MULEREPO_USERNAME }'"
+        echo "ANYPOINT_USERNAME length: ${#ANYPOINT_USERNAME}"
+        echo "DBLREPO_USERNAME length: ${#DBLREPO_USERNAME}"
+        echo "MULEREPO_USERNAME length: ${#MULEREPO_USERNAME}"
+        echo "MULEREPO_PASSWORD length: ${#MULEREPO_PASSWORD}"
+        echo "ANYPOINT_GROUP_ID length: ${#ANYPOINT_GROUP_ID}"
         echo "Starting Maven deployment..."
         mvn clean deploy -s ./settings.xml \
-          -Danypoint_username=${ANYPOINT_USERNAME } \
-          -Danypoint_password=${ANYPOINT_PASSWORD } \
-          -Ddblrepo_username=${DBLREPO_USERNAME } \
-          -Ddblrepo_password=${DBLREPO_PASSWORD } \
+          -Danypoint_username=${ANYPOINT_USERNAME} \
+          -Danypoint_password=${ANYPOINT_PASSWORD} \
+          -Ddblrepo_username=${DBLREPO_USERNAME} \
+          -Ddblrepo_password=${DBLREPO_PASSWORD} \
           -Dmuleentrepo_username=${MULEREPO_USERNAME} \
-          -Dmuleentrepo_password=${MULEREPO_PASSWORD}
+          -Dmuleentrepo_password=${MULEREPO_PASSWORD} \
+          -Danypoint_groupId=${ANYPOINT_GROUP_ID} 
 

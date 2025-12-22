@@ -2,7 +2,9 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>a79366f6-f351-4a5e-9386-00c7ef207362</groupId>
+	<!-- <groupId>a79366f6-f351-4a5e-9386-00c7ef207362</groupId> -->
+	<groupId>${anypoint.groupId}</groupId>
+	
 	<artifactId>datablind-policy</artifactId>
 	<version>5.0.0</version>
 
@@ -17,6 +19,7 @@
 		<exchange.url>https://maven.anypoint.mulesoft.com/api/v1/organizations/${project.groupId}/maven</exchange.url>
 		<http.policy.transform.extension>3.2.0</http.policy.transform.extension>
 		<securePropertyModuleVersion>1.2.7</securePropertyModuleVersion>
+		<!-- Group ID where the Datablind connector is hosted -->
 		<datablind.exchange.groupId>${project.groupId}</datablind.exchange.groupId>
 	</properties>
 	<dependencies>
