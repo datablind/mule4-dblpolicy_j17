@@ -21,6 +21,7 @@
 		<securePropertyModuleVersion>1.2.7</securePropertyModuleVersion>
 		<!-- Group ID where the Datablind connector is hosted -->
 		<datablind.exchange.groupId>${project.groupId}</datablind.exchange.groupId>
+		<anypoint.groupId>13c7cbe2-61a5-4740-9da0-ae298639b607</anypoint.groupId>
 	</properties>
 	<dependencies>
 		<dependency>
