@@ -60,6 +60,7 @@ configuration:
      defaultValue: '#[{ "Name" : "FE:PersonName", "TaxId" : "FE:SSN" }]'
      optional: true
      sensitive: false
+     textarea: true
      dependsOnKey: sensitiveFieldsSpecified
      dependsOnValue: true
      allowMultiple: false
