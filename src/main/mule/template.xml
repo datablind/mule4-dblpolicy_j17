@@ -32,7 +32,9 @@
     
     <!--   If dataBlindApiUri and dataBlindApiKey are blank, the policy gives error when creating DBLConnector. Hence assigning defaults -->
     
-	<zt:config name="DATA_BLIND_Config" doc:name="DATA BLIND Config" doc:id="db83d3cc-6e52-40bb-bbb4-d804660144b0" encryptionKey="{{{dataBlindKey}}}" apiKey="#[vars.dataBlindApiKey default 'NOKEY']" apiUri="#[vars.dataBlindApiUri default 'NOURI']" />
+	<zt:config name="DATA_BLIND_Config" doc:name="DATA BLIND Config" doc:id="db83d3cc-6e52-40bb-bbb4-d804660144b0" encryptionKey="{{{dataBlindKey}}}" >
+		<zt:connection apiUri="#[vars.dataBlindApiUri default 'NOURI']" apiKey="#[vars.dataBlindApiKey default 'NOKEY']"/>
+    </zt:config> 
 
     <http-policy:proxy name="{{{policyId}}}-custom-policy">
         <http-policy:source>
@@ -40,19 +42,16 @@
           
           	<set-variable variableName="logLabel" value="DATABLIND_POLICY 2.0.0: " />
        		<set-variable variableName="sensitiveFields" value="{{{sensitiveFields}}}" />
-    <set-variable variableName="dataBlindApiUri" value="{{{dataBlindApiUri}}}" />
-    <set-variable variableName="dataBlindApiKey" value="{{{dataBlindApiKey}}}" />
+            <set-variable variableName="dataBlindApiUri" value="{{{dataBlindApiUri}}}" />
+            <set-variable variableName="dataBlindApiKey" value="{{{dataBlindApiKey}}}" />
        		<set-variable variableName="sensitiveFieldsSpecified" value="{{{sensitiveFieldsSpecified}}}" />
        		<set-variable variableName="dataBlindKey" value="{{{dataBlindKey}}}" />
        		<set-variable variableName="eligibleHttpCodes" value="{{{eligibleHttpCodes}}}" />
        		<set-variable variableName="dataBlindPassphrase" value="{{{dataBlindPassphrase}}}" />
        		<set-variable variableName="dataBlindToken" value="{{{dataBlindToken}}}" />
-       		
-       		
-
+       	
 			<set-variable variableName="dataBlindOAuthScope" value="#[(authentication.properties.claims.scp filter ($ == 'DataBlind-Disabled'))[0] default 'DataBlind-Enabled' ]" /> 
-			
-						
+							
             <http-policy:execute-next/>  
             <logger level="INFO" message="#[ vars.logLabel ++ 'DataBlind Policy Begins after execute-next']" />
             
@@ -148,7 +147,6 @@
 	              	<logger level="INFO" message="#[vars.logLabel ++ 'DataBlind Policy Error Message : ' ++ write(error,'application/json')]"/>
 	              
 <!--    	             <set-payload value="Error in DataBlind Policy. Please check the DataBlind Policy configuration" /> -->
-
 
         	      </on-error-continue>
 	        </error-handler>

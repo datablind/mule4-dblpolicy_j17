@@ -1,6 +1,6 @@
 id: DataBlind
 name: DataBlind
-description: Allows Sensitive PII data based based on customer's token status
+description: Allows Sensitive PII data based on customer's token status
 category: Custom
 type: custom
 resourceLevelSupported: true

@@ -22,11 +22,11 @@
            <username>${anypoint_username}</username>
            <password>${anypoint_password}</password>
        </server>
-       <server>
-           <id>exchange-server</id>
-           <username>${anypoint_username}</username>
-           <password>${anypoint_password}</password>
-       </server>
+        <server>
+            <id>exchange-server</id>
+            <username>${anypoint_username}</username>
+            <password>${anypoint_password}</password>
+        </server>
        <server>
            <id>datablindrepo</id>
            <username>${dblrepo_username}</username>

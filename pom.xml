@@ -2,9 +2,11 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>a79366f6-f351-4a5e-9386-00c7ef207362</groupId>
+	<!-- <groupId>a79366f6-f351-4a5e-9386-00c7ef207362</groupId> -->
+	<groupId>${anypoint.groupId}</groupId>
+	
 	<artifactId>datablind-policy</artifactId>
-	<version>4.0.18</version>
+	<version>5.0.6</version>
 
 	<name>dblpolicy_j17</name>
 	<description>Allows Sensitive PII data based on customer's token status</description>
@@ -17,7 +19,12 @@
 		<exchange.url>https://maven.anypoint.mulesoft.com/api/v1/organizations/${project.groupId}/maven</exchange.url>
 		<http.policy.transform.extension>3.2.0</http.policy.transform.extension>
 		<securePropertyModuleVersion>1.2.7</securePropertyModuleVersion>
-		<datablind.exchange.groupId>${project.groupId}</datablind.exchange.groupId>
+		<!-- Datablind Connector is expected to be in the same exchange the Datablind policy is deployed -->
+<!-- 		<datablind.exchange.groupId>${project.groupId}</datablind.exchange.groupId> -->
+		<!-- Datablind connector version -->
+		<datablind.version>5.0.4</datablind.version>
+		<!-- Anypoint Group ID where the DataBlind connector is hosted -->
+		<anypoint.groupId>aa698b83-e3f6-4a0c-a0cb-35c2c4639454</anypoint.groupId>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -48,7 +55,7 @@
 		<dependency>
 			<groupId>${project.groupId}</groupId>
 			<artifactId>DataBlind</artifactId>
-			<version>4.0.6</version>
+			<version>${datablind.version}</version>
 			<classifier>mule-plugin</classifier>
 		</dependency>
 	</dependencies>
@@ -62,13 +69,13 @@
 				<configuration>
 					<additionalPluginDependencies>
 						<plugin>
-							<groupId>${datablind.exchange.groupId}</groupId>
+							<groupId>${project.groupId}</groupId>
 							<artifactId>DataBlind</artifactId>
 							<additionalDependencies>
 								<dependency>
 									<groupId>com.ztensor</groupId>
 									<artifactId>datacrypt</artifactId>
-									<version>3.0.3</version>
+									<version>3.0.5</version>
 								</dependency>
 							</additionalDependencies>
 						</plugin>
