@@ -56,13 +56,10 @@ configuration:
    - propertyName: sensitiveFields
      name: Sentitive Fields
      description: Sensitive fields in the API response
-     type: string
+     type: expression
      defaultValue: '#[{ "Name" : "FE:PersonName", "TaxId" : "FE:SSN" }]'
      optional: true
      sensitive: false
-     multiLine: true
-     textarea: true, 
-     isTextarea: true
      dependsOnKey: sensitiveFieldsSpecified
      dependsOnValue: true
      allowMultiple: false

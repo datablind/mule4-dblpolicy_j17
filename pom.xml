@@ -6,7 +6,7 @@
 	<groupId>${anypoint.groupId}</groupId>
 	
 	<artifactId>datablind-policy</artifactId>
-	<version>5.0.5</version>
+	<version>5.0.6</version>
 
 	<name>dblpolicy_j17</name>
 	<description>Allows Sensitive PII data based on customer's token status</description>
