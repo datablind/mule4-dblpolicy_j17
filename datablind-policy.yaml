@@ -60,16 +60,14 @@ configuration:
      defaultValue: '#[{ "Name" : "FE:PersonName", "TaxId" : "FE:SSN" }]'
      optional: true
      sensitive: false
-     multiLine: true
-     textarea: true, 
-     isTextarea: true
+     textarea: true
      dependsOnKey: sensitiveFieldsSpecified
      dependsOnValue: true
      allowMultiple: false
    - propertyName: eligibleHttpCodes
      name: Eligible HTTP Codes
      description: Apply Datablind only when the API response has the following HTTP Codes 
-     type: expression
+     type: string
      defaultValue: "#['200,201,202,205,213']"
      optional: false
      sensitive: false
