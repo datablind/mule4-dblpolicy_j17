@@ -19,7 +19,7 @@
 		<!-- Datablind Connector is expected to be in the same exchange the Datablind policy is deployed -->
 <!-- 		<datablind.exchange.groupId>${project.groupId}</datablind.exchange.groupId> -->
 		<!-- Datablind connector version -->
-		<datablind.version>5.0.4</datablind.version>
+		<datablind.version>5.0.6</datablind.version>
 		<!-- Anypoint Group ID where the DataBlind connector is hosted -->
 		<anypoint.groupId>aa698b83-e3f6-4a0c-a0cb-35c2c4639454</anypoint.groupId>
 	</properties>
@@ -51,7 +51,7 @@
 		</dependency>
 		<dependency>
 			<groupId>${project.groupId}</groupId>
-			<artifactId>DataBlind</artifactId>
+			<artifactId>mule-datablind-connector</artifactId>
 			<version>${datablind.version}</version>
 			<classifier>mule-plugin</classifier>
 		</dependency>
@@ -67,7 +67,7 @@
 					<additionalPluginDependencies>
 						<plugin>
 							<groupId>${project.groupId}</groupId>
-							<artifactId>DataBlind</artifactId>
+							<artifactId>mule-datablind-connector</artifactId>
 							<additionalDependencies>
 								<dependency>
 									<groupId>com.ztensor</groupId>
