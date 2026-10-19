@@ -5,7 +5,7 @@
 	<!-- <groupId>3a209eb5-371f-4b87-aaa2-19c539592cea</groupId>  -->
 	<!-- <groupId>acda9d4d-1bfb-4b44-9b48-6f8f49157bbd</groupId> -->
 	<artifactId>datablind-policy</artifactId>
-	<version>1.2.7</version>
+	<version>1.2.8</version>
 	<name>ZTensor DataBlind Policy - Mule 4, Java 17</name>
     <description>ZTensor DataBlind Policy for Mule 4, Java 17 - Sensitive Data Protection </description>
 
@@ -22,7 +22,7 @@
 		<!-- Datablind connector version -->
 		<!-- <datablind.version>1.0.0</datablind.version>
 		<datablind.connector.groupId>org.ztensor.connectors</datablind.connector.groupId> -->
-		<datablind.version>1.5.2</datablind.version>
+		<datablind.version>1.5.3</datablind.version>
 		<!-- <datablind.connector.groupId>3a209eb5-371f-4b87-aaa2-19c539592cea</datablind.connector.groupId> -->
 		<datablind.connector.groupId>173b3eb5-ddfd-4513-93b1-7ba24fc4eed5</datablind.connector.groupId>
 	</properties>
@@ -83,7 +83,7 @@
 								<dependency>
 									<groupId>com.ztensor</groupId>
 									<artifactId>datacrypt</artifactId>
-									<version>4.3.2</version>
+									<version>4.3.3</version>
 								</dependency>
 							</additionalDependencies>
 						</plugin>
