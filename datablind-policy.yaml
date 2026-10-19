@@ -1,8 +1,9 @@
 id: DataBlind
 name: DataBlind
-description: Allows Sensitive PII data based on customer's token status
+description: Protects sensitive PII data based on customer's token status
 category: Custom
 type: custom
+icon: icon/icon.svg
 resourceLevelSupported: true
 encryptionSupported: true
 standalone: true
@@ -93,16 +94,27 @@ configuration:
      dependsOnKey: sensitiveFieldsSpecified
      dependsOnValue: false
      allowMultiple: false     
-   - propertyName: sensitiveFields
-     name: Sentitive Fields
-     description: Sensitive fields in the API response
-     type: expression
-     defaultValue: '#[{ "Name" : "FE:PersonName", "TaxId" : "FE:SSN" }]'
+#   - propertyName: sensitiveFields
+#     name: Sentitive Fields
+#     description: Sensitive fields in the API response
+#     type: expression
+#     defaultValue: '#[{ "Name" : "FE:PersonName", "TaxId" : "FE:SSN" }]'
+#     optional: true
+#     sensitive: false
+#     dependsOnKey: sensitiveFieldsSpecified
+#     dependsOnValue: true
+#     allowMultiple: false
+   - propertyName: sensitiveFieldsMultiLine
+     name: Sentitive Fields JSON
+     description: Multi Line Sensitive fields in the API response (use Add to add more entries)
+     type: string
+     defaultValue: '{ "Name" : "FE:PersonName", "TaxId" : "FE:SSN" }'
      optional: true
      sensitive: false
      dependsOnKey: sensitiveFieldsSpecified
      dependsOnValue: true
-     allowMultiple: false
+     allowMultiple: true
+     multiline: true
    - propertyName: eligibleHttpCodes
      name: Eligible HTTP Codes
      description: Apply Datablind only when the API response has the following HTTP Codes 
@@ -127,3 +139,12 @@ configuration:
      optional: false
      sensitive: false
      allowMultiple: false
+   - propertyName: filterRule
+     name: Filter Rules
+     description: Filter rules to be applied to the API response
+     type: string
+     defaultValue: '{ "filter": "exclude", "accountNumber" :  ["12345678","12345679"] }'
+     optional: true
+     sensitive: false
+     allowMultiple: true
+     multiline: true
