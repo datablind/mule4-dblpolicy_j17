@@ -54,46 +54,6 @@ configuration:
      dependsOnKey: sensitiveFieldsSpecified
      dependsOnValue: false
      allowMultiple: false     
-   - propertyName: proxyHost
-     name: Proxy host for accessing DataBlind AI Redaction Service URI
-     description: Proxy host for accessing DataBlind AI Redaction Service URI
-     type: expression
-     defaultValue: "#['0001']"
-     optional: true
-     sensitive: false
-     dependsOnKey: sensitiveFieldsSpecified
-     dependsOnValue: false
-     allowMultiple: false     
-   - propertyName: proxyPort
-     name: Proxy port for accessing DataBlind AI Redaction Service URI
-     description: Proxy port for accessing DataBlind AI Redaction Service URI
-     type: expression
-     defaultValue: "#['8080']"
-     optional: true
-     dependsOnKey: sensitiveFieldsSpecified
-     dependsOnValue: false
-     sensitive: false
-     allowMultiple: false     
-   - propertyName: proxyUsername
-     name: Proxy username for accessing DataBlind AI Redaction Service URI
-     description: Proxy username for accessing DataBlind AI Redaction Service URI
-     type: expression
-     defaultValue: "#['proxyusername']"
-     optional: true
-     sensitive: false
-     dependsOnKey: sensitiveFieldsSpecified
-     dependsOnValue: false
-     allowMultiple: false     
-   - propertyName: proxyPassword
-     name: Proxy password for accessing DataBlind AI Redaction Service URI
-     description: Proxy password for accessing DataBlind AI Redaction Service URI
-     type: expression
-     defaultValue: "#['proxypassword']"
-     optional: true
-     sensitive: true
-     dependsOnKey: sensitiveFieldsSpecified
-     dependsOnValue: false
-     allowMultiple: false     
 #   - propertyName: sensitiveFields
 #     name: Sentitive Fields
 #     description: Sensitive fields in the API response

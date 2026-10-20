@@ -2,7 +2,6 @@
 <mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
 	xmlns:http="http://www.mulesoft.org/schema/mule/http"
 	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
-      xmlns:zt="http://www.mulesoft.org/schema/mule/zt"
       xmlns="http://www.mulesoft.org/schema/mule/core"
       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
       xmlns:http-policy="http://www.mulesoft.org/schema/mule/http-policy"
@@ -19,9 +18,7 @@
   http://www.mulesoft.org/schema/mule/secure-properties 
   http://www.mulesoft.org/schema/mule/secure-properties/current/mule-secure-properties.xsd
   http://www.mulesoft.org/schema/mule/http-policy-transform 
-  http://www.mulesoft.org/schema/mule/http-policy-transform/current/mule-http-policy-transform.xsd
-  http://www.mulesoft.org/schema/mule/zt 
-  http://www.mulesoft.org/schema/mule/zt/current/mule-zt.xsd">
+  http://www.mulesoft.org/schema/mule/http-policy-transform/current/mule-http-policy-transform.xsd">
 
 
     {{#if encrypted}}
@@ -30,13 +27,6 @@
     </secure-properties:config>
     {{/if}}
     
-    <!--   If dataBlindApiUri and dataBlindApiKey are blank, the policy gives error when creating DBLConnector. Hence assigning defaults -->
-    
-	<zt:config name="DATA_BLIND_Config" doc:name="DATA BLIND Config" doc:id="db83d3cc-6e52-40bb-bbb4-d804660144b0" encryptionKey="{{{dataBlindKey}}}" >
-		<zt:connection apiUri="#[vars.dataBlindApiUri default 'NOURI']" apiKey="#[vars.dataBlindApiKey default 'NOKEY']" 
-    proxyHost="#[vars.proxyHost default '']" proxyUsername="#[vars.proxyUsername default '']" proxyPassword="#[vars.proxyPassword default '']" proxyPort="#[if (vars.proxyPort != null and vars.proxyPort != '') vars.proxyPort as Number else 0]"/>
-    </zt:config> 
-
     <http-policy:proxy name="{{{policyId}}}-custom-policy">
         <http-policy:source>
           <try>
@@ -48,13 +38,13 @@
             <set-variable variableName="dataBlindApiKey" value="{{{dataBlindApiKey}}}" />
        		  <set-variable variableName="sensitiveFieldsSpecified" value="{{{sensitiveFieldsSpecified}}}" />
        		  <set-variable variableName="dataBlindKey" value="{{{dataBlindKey}}}" />
+       		  <!-- Key identity passed to datacrypt with every call (same values the connector used to hard-code) -->
+       		  <set-variable variableName="keyRingId" value="CipherWorks" />
+       		  <set-variable variableName="keyId" value="Admin" />
+       		  <set-variable variableName="keyVersion" value="1.0" />
        		  <set-variable variableName="eligibleHttpCodes" value="{{{eligibleHttpCodes}}}" />
        		  <set-variable variableName="dataBlindPassphrase" value="{{{dataBlindPassphrase}}}" />
        		  <set-variable variableName="dataBlindToken" value="{{{dataBlindToken}}}" />
-       		  <set-variable variableName="proxyHost" value="{{{proxyHost}}}" />
-       		  <set-variable variableName="proxyUsername" value="{{{proxyUsername}}}" />
-       		  <set-variable variableName="proxyPassword" value="{{{proxyPassword}}}" />
-       		  <set-variable variableName="proxyPort" value="{{{proxyPort}}}" />
        		  <set-variable variableName="filterRule" value="{{{filterRule}}}" />
        		  <set-variable variableName="filterRule" value="#[do { var parsed = if (vars.filterRule != null and vars.filterRule is String and sizeOf(trim(vars.filterRule)) > 0) read(vars.filterRule, 'application/json') else vars.filterRule --- if (parsed != null and parsed is Array) {( parsed )} else parsed }]" />
 			  <!-- Based on the tests we have done, sensitiveFieldsMultiLine is a multi line field, but the values
@@ -105,9 +95,24 @@
 				   <choice>
 				      <when expression="#[vars.filterRule != null and (!(vars.filterRule is String) or sizeOf(trim(vars.filterRule)) > 0)]">
 						<logger level="INFO" message="#[vars.logLabel ++ 'filterRule ' ++ write(vars.filterRule, 'application/json')]" />
-				         <zt:filter-json doc:name="Filter json" doc:id="c1c51b6a-a133-431c-a633-d6351e34d86b" config-ref="DATA_BLIND_Config" filterConditions="#[write(vars.filterRule, 'application/json')]" passPhrase="#[vars.dataBlindPassphrase]" overRideToken="#[vars.dataBlindToken]" target="dblindOut">
-							<zt:sensitive-json ><![CDATA[#[message.payload]]]></zt:sensitive-json>
-				         </zt:filter-json>
+					         <ee:transform doc:name="Filter json" doc:id="c1c51b6a-a133-431c-a633-d6351e34d86b" >
+					            <ee:message />
+					            <ee:variables >
+					               <ee:set-variable variableName="dblindOut" ><![CDATA[%dw 2.0
+import java!com::ztensor::util::json::JsonDataCryptFacade
+output application/json
+---
+read(JsonDataCryptFacade::filterJson(
+  vars.keyRingId,
+  vars.keyId,
+  vars.keyVersion,
+  vars.dataBlindKey as String,
+  write(vars.filterRule, 'application/json'),
+  write(payload, 'application/json', {indent: false}),
+  vars.dataBlindToken,
+  vars.dataBlindPassphrase), 'application/json')]]></ee:set-variable>
+					            </ee:variables>
+					         </ee:transform>
 				         <logger level="INFO" message="#[vars.logLabel ++ 'filterRule applied']" />
 				         <!-- <logger level="INFO" message="#[vars.dblindOut]" /> -->
 				      </when>
@@ -116,9 +121,25 @@
                    <choice>
                       <when expression="#[((vars.sensitiveFieldsSpecified as Boolean) == true)]" >   
 						<logger level="INFO" message="#[vars.logLabel ++ 'sensitiveFieldsMultiLine ' ++ write(vars.sensitiveFieldsMultiLine, 'application/json')]" />
-                      		<zt:encrypt-json doc:name="Encrypt json" doc:id="2ee9cd3c-ecc5-4bef-b3a9-cbcc76d9428d" config-ref="DATA_BLIND_Config" sensitiveFields="#[write(vars.sensitiveFieldsMultiLine, 'application/json')]" tweak="#[vars.tweak]" passPhrase="#[vars.dataBlindPassphrase]" overRideToken="#[vars.dataBlindToken]" target="dblindOut">
-                      			<zt:sensitive-json><![CDATA[#[vars.dblindOut default message.payload]]]></zt:sensitive-json>
-                      		</zt:encrypt-json>
+                      		<ee:transform doc:name="Encrypt json" doc:id="2ee9cd3c-ecc5-4bef-b3a9-cbcc76d9428d" >
+                      			<ee:message />
+                      			<ee:variables >
+                      				<ee:set-variable variableName="dblindOut" ><![CDATA[%dw 2.0
+import java!com::ztensor::util::json::JsonDataCryptFacade
+output application/json
+---
+read(JsonDataCryptFacade::encryptJson(
+  vars.keyRingId,
+  vars.keyId,
+  vars.keyVersion,
+  vars.dataBlindKey as String,
+  vars.tweak as String,
+  write(vars.dblindOut default payload, 'application/json', {indent: false}),
+  write(vars.sensitiveFieldsMultiLine, 'application/json'),
+  vars.dataBlindToken,
+  vars.dataBlindPassphrase), 'application/json')]]></ee:set-variable>
+                      			</ee:variables>
+                      		</ee:transform>
                       </when>
                       <otherwise >
        				        <logger level="INFO" message="[vars.logLabel ++ 'Sensitive Data not specified, using AI to determine sensitive fields']" />

@@ -5,7 +5,7 @@
 	<!-- <groupId>3a209eb5-371f-4b87-aaa2-19c539592cea</groupId>  -->
 	<!-- <groupId>acda9d4d-1bfb-4b44-9b48-6f8f49157bbd</groupId> -->
 	<artifactId>datablind-policy</artifactId>
-	<version>1.2.8</version>
+	<version>1.2.10</version>
 	<name>ZTensor DataBlind Policy - Mule 4, Java 17</name>
     <description>ZTensor DataBlind Policy for Mule 4, Java 17 - Sensitive Data Protection </description>
 
@@ -17,14 +17,7 @@
 		<exchange.url>https://maven.anypoint.mulesoft.com/api/v1/organizations/${project.groupId}/maven</exchange.url>
 		<http.policy.transform.extension>3.2.0</http.policy.transform.extension>
 		<securePropertyModuleVersion>1.2.7</securePropertyModuleVersion>
-		<!-- Datablind Connector is expected to be in the same exchange the Datablind policy is 
-		 deployed, Make sure the project.groupId is the same as the Datablind connector's exchange group id -->
-		<!-- Datablind connector version -->
-		<!-- <datablind.version>1.0.0</datablind.version>
-		<datablind.connector.groupId>org.ztensor.connectors</datablind.connector.groupId> -->
-		<datablind.version>1.5.3</datablind.version>
-		<!-- <datablind.connector.groupId>3a209eb5-371f-4b87-aaa2-19c539592cea</datablind.connector.groupId> -->
-		<datablind.connector.groupId>173b3eb5-ddfd-4513-93b1-7ba24fc4eed5</datablind.connector.groupId>
+		<datacrypt.version>4.3.5</datacrypt.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -52,20 +45,14 @@
 			<version>${securePropertyModuleVersion}</version>
 			<classifier>mule-plugin</classifier>
 		</dependency>
-		<!-- <dependency>
-			<groupId>${project.groupId}</groupId>
-			<artifactId>mule-datablind-connector</artifactId>
-			<version>${datablind.version}</version>
-			<classifier>mule-plugin</classifier>
-		</dependency> -->
-
+		<!-- DataBlind datacrypt library. The policy calls the static com.ztensor.util.json.JsonDataCryptFacade
+		     directly from DataWeave (java! import); no DataBlind connector or Java module is needed.
+		     Resolved from the datablindrepo repository declared below. -->
 		<dependency>
-			<groupId>${datablind.connector.groupId}</groupId>
-			<artifactId>mule-datablind-connector</artifactId>
-			<version>${datablind.version}</version>
-			<classifier>mule-plugin</classifier>
-		  </dependency>
-
+			<groupId>com.ztensor</groupId>
+			<artifactId>datacrypt-release</artifactId>
+			<version>${datacrypt.version}</version>
+		</dependency>
 	</dependencies>
 	<build>
 		<plugins>
@@ -75,19 +62,6 @@
 				<version>${mule.maven.plugin.version}</version>
 				<extensions>true</extensions>
 				<configuration>
-					<additionalPluginDependencies>
-						<plugin>
-							<groupId>${datablind.connector.groupId}</groupId>
-							<artifactId>mule-datablind-connector</artifactId>
-							<additionalDependencies>
-								<dependency>
-									<groupId>com.ztensor</groupId>
-									<artifactId>datacrypt</artifactId>
-									<version>4.3.3</version>
-								</dependency>
-							</additionalDependencies>
-						</plugin>
-					</additionalPluginDependencies>
 					<classifier>policy</classifier>
 				</configuration>
 			</plugin>
@@ -141,7 +115,7 @@
 		<repository>
 			<id>datablindrepo</id>
 			<name>GitHub OWNER Apache Maven Packages</name>
-			<url>https://maven.pkg.github.com/datablind/datacrypt</url>
+			<url>https://maven.pkg.github.com/datablind/datacrypt-release</url>
 		</repository>
 		<repository>
 			<id>anypoint-exchange-v3</id>
