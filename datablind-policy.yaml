@@ -108,3 +108,10 @@ configuration:
      sensitive: false
      allowMultiple: true
      multiline: true
+   - propertyName: debugEnabled
+     name: Enable Debug Logging
+     description: When enabled, the policy emits detailed diagnostic logs. Leave disabled in production.
+     type: boolean
+     defaultValue: false
+     optional: false
+     allowMultiple: false

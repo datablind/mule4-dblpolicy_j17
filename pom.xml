@@ -2,10 +2,10 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>173b3eb5-ddfd-4513-93b1-7ba24fc4eed5</groupId>
-	<!-- <groupId>3a209eb5-371f-4b87-aaa2-19c539592cea</groupId>  -->
+	<!-- <groupId>3a209eb5-371f-4b87-aaa2-19c539592cea</groupId> -->
 	<!-- <groupId>acda9d4d-1bfb-4b44-9b48-6f8f49157bbd</groupId> -->
 	<artifactId>datablind-policy</artifactId>
-	<version>1.2.10</version>
+	<version>1.2.16</version>
 	<name>ZTensor DataBlind Policy - Mule 4, Java 17</name>
     <description>ZTensor DataBlind Policy for Mule 4, Java 17 - Sensitive Data Protection </description>
 
@@ -17,7 +17,7 @@
 		<exchange.url>https://maven.anypoint.mulesoft.com/api/v1/organizations/${project.groupId}/maven</exchange.url>
 		<http.policy.transform.extension>3.2.0</http.policy.transform.extension>
 		<securePropertyModuleVersion>1.2.7</securePropertyModuleVersion>
-		<datacrypt.version>4.3.5</datacrypt.version>
+		<datacrypt.version>4.3.10</datacrypt.version>
 	</properties>
 	<dependencies>
 		<dependency>
