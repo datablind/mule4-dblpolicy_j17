@@ -31,9 +31,7 @@
         <http-policy:source>
           <try>
           
-          	<set-variable variableName="logLabel" value="DATABLIND_POLICY 1.2.16: " />
-       		  <!-- Debug toggle: when false, all diagnostic loggers below are skipped -->
-       		  <set-variable variableName="debugEnabled" value="#[{{{debugEnabled}}}]" />
+          	<set-variable variableName="logLabel" value="DATABLIND_POLICY 1.2.21: " />
        		<!-- <set-variable variableName="sensitiveFields" value="{{{sensitiveFields}}}" /> -->
        		  <set-variable variableName="sensitiveFieldsMultiLine" value="{{{sensitiveFieldsMultiLine}}}" />
             <set-variable variableName="dataBlindApiUri" value="{{{dataBlindApiUri}}}" />
@@ -52,22 +50,14 @@
 			  <!-- Based on the tests we have done, sensitiveFieldsMultiLine is a multi line field, but the values
 			   are always coming in as an array of single element. We still have the logic to handle multiple elements, 
 			   if it comes in as an array of multiple elements. -->
-			  <choice>
-			     <when expression="#[vars.debugEnabled]">
 			        <logger level="DEBUG" message="#[vars.logLabel ++ 'sensitiveFieldsMultiLine item count: ' ++ (if (vars.sensitiveFieldsMultiLine != null and vars.sensitiveFieldsMultiLine is String and sizeOf(trim(vars.sensitiveFieldsMultiLine)) > 0) sizeOf(read(vars.sensitiveFieldsMultiLine, 'application/json')) else if (vars.sensitiveFieldsMultiLine is Array) sizeOf(vars.sensitiveFieldsMultiLine) else 0)]" />
-			     </when>
-			  </choice>
        		  <set-variable variableName="sensitiveFieldsMultiLine" value="#[do { var parsed = if (vars.sensitiveFieldsMultiLine != null and vars.sensitiveFieldsMultiLine is String and sizeOf(trim(vars.sensitiveFieldsMultiLine)) > 0) read(vars.sensitiveFieldsMultiLine, 'application/json') else vars.sensitiveFieldsMultiLine --- if (parsed != null and parsed is Array) {( parsed )} else parsed }]" />
 
 			  <set-variable variableName="dataBlindOAuthScope" value="#[(authentication.properties.claims.scp filter ($ == 'DataBlind-Disabled'))[0] default 'DataBlind-Enabled' ]" /> 
 							
             <http-policy:execute-next/>  
-            <choice>
-               <when expression="#[vars.debugEnabled]">
-                  <logger level="DEBUG" message="#[ vars.logLabel ++ 'DataBlind Policy Begins after execute-next']" />
-                  <logger level="INFO" message="#[vars.logLabel ++ 'dataBlindOAuthScope ' ++ vars.dataBlindOAuthScope]" />
-               </when>
-            </choice>
+            <logger level="DEBUG" message="#[ vars.logLabel ++ 'DataBlind Policy Begins after execute-next']" />
+            <logger level="DEBUG" message="#[vars.logLabel ++ 'dataBlindOAuthScope ' ++ vars.dataBlindOAuthScope]" />
             
        		<set-variable variableName="payload" value="#[message.payload]" />   
        		
@@ -75,13 +65,9 @@
        		<logger level="INFO" message="#[vars.payload]" />
        		<logger level="INFO" message="#[message.payload]" />
 -->
-       		<choice>
-       		   <when expression="#[vars.debugEnabled]">
-				  <logger level="DEBUG" message="#[vars.logLabel ++ 'message.payload.id ' ++ message.payload.id]" />
-       		      <logger level="DEBUG" message="#[vars.logLabel ++ vars.sensitiveFieldsSpecified]" />
-       		      <logger level="DEBUG" message="#[vars.sensitiveFieldsMultiLine]" />
-       		   </when>
-       		</choice>
+			<logger level="DEBUG" message="#[vars.logLabel ++ 'message.payload.id ' ++ ((if (message.payload is Object) message.payload.id else null) default '12345678')]" />
+       		<logger level="DEBUG" message="#[vars.logLabel ++ vars.sensitiveFieldsSpecified]" />
+       		<logger level="DEBUG" message="#[vars.sensitiveFieldsMultiLine]" />
 <!--
        		<logger level="INFO" message="#[vars.logLabel ++ vars.dataBlindPassphrase]" />
        		<logger level="INFO" message="#[vars.logLabel ++ vars.dataBlindToken]" />
@@ -99,19 +85,11 @@
                 
                    <set-variable variableName="tweak" value="{{{tweak}}}" />
        		       <set-variable variableName="filterIds" value="{{{idField}}}" />
-       		       <choice>
-       		          <when expression="#[vars.debugEnabled]">
-       		             <logger level="INFO" message="#[output application/java --- vars.logLabel ++ (vars.tweak as String)]" />
-       		          </when>
-       		       </choice>
+       		        <logger level="DEBUG" message="#[output application/java --- vars.logLabel ++ (vars.tweak as String)]" />
 
 				   <choice>
 				      <when expression="#[vars.filterRule != null and (!(vars.filterRule is String) or sizeOf(trim(vars.filterRule)) > 0)]">
-						<choice>
-						   <when expression="#[vars.debugEnabled]">
-						      <logger level="DEBUG" message="#[vars.logLabel ++ 'filterRule ' ++ write(vars.filterRule, 'application/json')]" />
-						   </when>
-						</choice>
+						    <logger level="DEBUG" message="#[vars.logLabel ++ 'filterRule ' ++ write(vars.filterRule, 'application/json')]" />
 					         <ee:transform doc:name="Filter json" doc:id="c1c51b6a-a133-431c-a633-d6351e34d86b" >
 					            <ee:message />
 					            <ee:variables >
@@ -137,11 +115,7 @@ read(JsonDataCryptFacade::filterJson(
 
                    <choice>
                       <when expression="#[((vars.sensitiveFieldsSpecified as Boolean) == true)]" >   
-						<choice>
-						   <when expression="#[vars.debugEnabled]">
-						      <logger level="DEBUG" message="#[vars.logLabel ++ 'sensitiveFieldsMultiLine ' ++ write(vars.sensitiveFieldsMultiLine, 'application/json')]" />
-						   </when>
-						</choice>
+						    <logger level="DEBUG" message="#[vars.logLabel ++ 'sensitiveFieldsMultiLine ' ++ write(vars.sensitiveFieldsMultiLine, 'application/json')]" />
                       		<ee:transform doc:name="Encrypt json" doc:id="2ee9cd3c-ecc5-4bef-b3a9-cbcc76d9428d" >
                       			<ee:message />
                       			<ee:variables >

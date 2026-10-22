@@ -5,7 +5,7 @@
 	<!-- <groupId>3a209eb5-371f-4b87-aaa2-19c539592cea</groupId> -->
 	<!-- <groupId>acda9d4d-1bfb-4b44-9b48-6f8f49157bbd</groupId> -->
 	<artifactId>datablind-policy</artifactId>
-	<version>1.2.16</version>
+	<version>1.2.21</version>
 	<name>ZTensor DataBlind Policy - Mule 4, Java 17</name>
     <description>ZTensor DataBlind Policy for Mule 4, Java 17 - Sensitive Data Protection </description>
 
